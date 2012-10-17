@@ -18,7 +18,7 @@
     "minimum-stability": "dev",
     "require": {
         "friendsofsymfony/user-bundle": "dev-master",
-        "symfony/form": "dev-master"
+        "symfony/form": ">=2.1,<2.3-dev"
     },
     "suggest": {
     },
