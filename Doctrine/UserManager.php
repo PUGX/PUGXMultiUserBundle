@@ -7,6 +7,7 @@ use FOS\UserBundle\Model\UserInterface;
 use FOS\UserBundle\Doctrine\UserManager as BaseUserManager;
 use FOS\UserBundle\Util\CanonicalizerInterface;
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
+use Symfony\Component\Security\Core\User\UserInterface as SecurityUserInterface;
 use Symfony\Component\Validator\Constraint;
 use PUGX\MultiUserBundle\Model\UserDiscriminator;
 
@@ -133,4 +134,22 @@ class UserManager extends BaseUserManager
         return array();
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    public function refreshUser(SecurityUserInterface $user)
+    {
+        $class = $this->getClass();
+        // Ex. when we switch user, $class is an old one and $user is a new one
+        // so this checking from parent code is not passed.
+        // Check if class is registered in discriminator and use this class
+        if (!$user instanceof $class) {
+            $newClass = get_class($user);
+            if (in_array($newClass, $this->userDiscriminator->getClasses())) {
+                $this->userDiscriminator->setClass($newClass);
+            }
+        }
+
+        return parent::refreshUser($user);
+    }
 }
