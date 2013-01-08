@@ -25,6 +25,8 @@ class ControllerHandlerTest extends \PHPUnit_Framework_TestCase
                 ->disableOriginalConstructor()->getMock();
         $this->form = $this->getMockBuilder('Symfony\Component\Form\Form')
                 ->disableOriginalConstructor()->getMock();
+        $this->formFactory = $this->getMockBuilder('FOS\UserBundle\Form\Factory\FormFactory')
+            ->disableOriginalConstructor()->getMock();
         $this->registrationController = $this->getMockBuilder('FOS\UserBundle\Controller\RegistrationController')
                 ->disableOriginalConstructor()->getMock();
         $this->response = $this->getMockBuilder('Symfony\Component\HttpFoundation\RedirectResponse')
@@ -49,15 +51,17 @@ class ControllerHandlerTest extends \PHPUnit_Framework_TestCase
     {
         $this->userDiscriminator->expects($this->exactly(1))->method('setClass')
                 ->with('MyFirstUserClass');
-        $this->userDiscriminator->expects($this->exactly(1))->method('getRegistrationForm')
-                ->will($this->returnValue($this->form));
+        $this->userDiscriminator->expects($this->exactly(1))->method('getRegistrationFormFactory')
+            ->with('MyFirstUserClass')
+            ->will($this->returnValue($this->formFactory));
         $this->eventDispatcher->expects($this->at(0))->method('dispatch')
-                ->with('pugx_multi_user.change_container_value', new ContainerChangeEvent('fos_user.registration.form', $this->form));
+                ->with('pugx_multi_user.change_container_value', new ContainerChangeEvent('fos_user.registration.form.factory', $this->formFactory));
         $this->controllerFactory->expects($this->exactly(1))->method('build')
                 ->with('Registration')
                 ->will($this->returnValue($this->registrationController));
         $this->registrationController->expects($this->exactly(1))->method('registerAction')
-                ->will($this->returnValue($this->response));
+                ->with($this->request)
+		->will($this->returnValue($this->response));
         $this->securityContext->expects($this->exactly(1))->method('getToken')
                 ->will($this->returnValue($this->token));
         $this->token->expects($this->exactly(1))->method('getUser')
@@ -65,7 +69,7 @@ class ControllerHandlerTest extends \PHPUnit_Framework_TestCase
         $this->eventDispatcher->expects($this->at(1))->method('dispatch')
                 ->with('security.manual_login', new ManualLoginEvent($this->user));
         
-        $result = $this->handler->registration('MyFirstUserClass');
+        $result = $this->handler->registration('MyFirstUserClass', $this->request);
         $this->assertEquals($this->response, $result);
     }
         

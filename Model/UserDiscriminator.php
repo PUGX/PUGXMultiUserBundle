@@ -5,6 +5,7 @@ namespace PUGX\MultiUserBundle\Model;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use FOS\UserBundle\Model\UserInterface;
+use FOS\UserBundle\Form\Factory\FormFactory;
 
 /**
  * Description of UserDiscriminator
@@ -158,7 +159,36 @@ class UserDiscriminator
         return $user;
     }
 
+    /**
+     * @param String $class
+     * @return \FOS\UserBundle\Form\Factory\FormFactory
+     */
+    public function getRegistrationFormFactory($class)
+    {
+        $type = $this->getRegistrationFormType($class);
 
+        $validation_groups = $this->registrationFormOptions[$class]['validation_groups'];
+
+        $formFactory = new formFactory($this->formFactory, $type->getName(), $type, $validation_groups);
+
+        return $formFactory;
+    }
+
+    /**
+     * @param String $class
+     * @return \FOS\UserBundle\Form\Factory\FormFactory
+     */
+    public function getProfileFormFactory($class)
+    {
+        $type = $this->getProfileFormType($class);
+
+        $validation_groups = $this->profileFormOptions[$class]['validation_groups'];
+
+        $formFactory = new formFactory($this->formFactory, $type->getName(), $type, $validation_groups);
+
+        return $formFactory;
+    }
+    
     /**
      *
      * @return \Symfony\Component\Form\Form 

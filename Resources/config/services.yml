@@ -8,18 +8,6 @@ services:
         class: PUGX\MultiUserBundle\Controller\ControllerHandler
         arguments: ["@pugx_user.manager.user_discriminator", "@security.context", "@event_dispatcher", "@pugx_multi_user.controller.factory"]
         
-    # custom fosuser registration form handler
-    pugx_user.form.handler.registration:
-        class: PUGX\MultiUserBundle\Form\Handler\RegistrationFormHandler
-        arguments: ["@fos_user.registration.form", "@request", "@fos_user.user_manager", "@fos_user.mailer", "@fos_user.util.token_generator.default", "@pugx_user.manager.user_discriminator"]
-        scope: request
-    
-    # custom fosuser profile form handler
-    pugx_user.form.handler.profile:
-        class: PUGX\MultiUserBundle\Form\Handler\ProfileFormHandler
-        arguments: ["@fos_user.profile.form", "@request", "@fos_user.user_manager", "@pugx_user.manager.user_discriminator"]
-        scope: request
-    
     # class to discriminate users types
     pugx_user.manager.user_discriminator:
         class:     PUGX\MultiUserBundle\Model\UserDiscriminator
@@ -53,10 +41,6 @@ services:
         arguments: [ "@doctrine" ]
                 
     # alias
-    pugx_user_registration_form_handler:
-        alias: pugx_user.form.handler.registration
-    pugx_user_profile_form_handler:
-        alias: pugx_user.form.handler.profile
     pugx_user_discriminator:
         alias: pugx_user.manager.user_discriminator
     

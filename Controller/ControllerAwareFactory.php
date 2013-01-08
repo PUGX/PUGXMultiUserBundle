@@ -4,6 +4,7 @@ namespace PUGX\MultiUserBundle\Controller;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use FOS\UserBundle\Controller\RegistrationController;
+use FOS\UserBundle\Controller\ProfileController;
 
 class ControllerAwareFactory
 {
@@ -42,5 +43,10 @@ class ControllerAwareFactory
     protected function getRegistrationController()
     {
         return new RegistrationController();
+    }
+    
+        protected function getProfileController()
+    {
+        return new ProfileController();
     }
 }

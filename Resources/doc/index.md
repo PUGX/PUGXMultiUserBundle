@@ -266,7 +266,14 @@ class RegistrationUserOne extends BaseController
         if ($return instanceof RedirectResponse) {
             return $return;
         }
+        
+        //This is bad at the moment
+        //Needs to be changed as binding the form twice is stupid
+        //Any idea??
+        if ('POST' === $request->getMethod()) {
 
+            $form->bind($request);
+        }
         return $this->container->get('templating')->renderResponse('AcmeUserBundle:Registration:user_one.form.html.twig', array(
             'form' => $form->createView(),
         ));
@@ -295,6 +302,14 @@ class RegistrationUserTwo extends BaseController
 
         if ($return instanceof RedirectResponse) {
             return $return;
+        }
+        
+        //This is bad at the moment
+        //Needs to be changed as binding the form twice is stupid
+        //Any idea??
+        if ('POST' === $request->getMethod()) {
+
+            $form->bind($request);
         }
 
         return $this->container->get('templating')->renderResponse('AcmeUserBundle:Registration:user_two.form.html.twig', array(

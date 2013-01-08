@@ -58,19 +58,44 @@ class ControllerHandler
      *
      * @param string $userClass 
      */
-    public function registration($userClass)
+    public function registration($userClass, Request $request)
     {
         $this->userDiscriminator->setClass($userClass);
-        $form = $this->userDiscriminator->getRegistrationForm();
+
+        $formFactory = $this->userDiscriminator->getRegistrationFormFactory($userClass);
         
-        $event = new ContainerChangeEvent('fos_user.registration.form', $form);
+        $event = new ContainerChangeEvent('fos_user.registration.form.factory', $formFactory);
         $this->eventDispatcher->dispatch('pugx_multi_user.change_container_value', $event);
         
         $controller = $this->controllerFactory->build('Registration');
-        $return = $controller->registerAction();
+        $return = $controller->registerAction($request);
         
         $this->dispatchManualLogin();
         
+        return $return;
+    }
+    
+     /**
+     *
+     * @param string $userClass
+     * @param Request $request
+     * @return
+     */
+    public function profile($userClass, Request $request)
+    {
+
+        $this->userDiscriminator->setClass($userClass);
+
+        $formFactory = $this->userDiscriminator->getProfileFormFactory($userClass);
+
+        $event = new ContainerChangeEvent('fos_user.profile.form.factory', $formFactory);
+
+        $this->eventDispatcher->dispatch('pugx_multi_user.change_container_value', $event);
+
+        $controller = $this->controllerFactory->build('Profile');
+
+        $return = $controller->editAction($request);
+
         return $return;
     }
     
