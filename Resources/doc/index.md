@@ -252,6 +252,7 @@ RegistrationUserOne
 namespace Acme\UserBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller as BaseController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
 class RegistrationUserOne extends BaseController
 {
@@ -282,6 +283,7 @@ RegistrationUserTwo
 namespace Acme\UserBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller as BaseController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
 class RegistrationUserTwo extends BaseController
 {
