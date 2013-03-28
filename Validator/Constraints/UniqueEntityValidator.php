@@ -106,6 +106,6 @@ class UniqueEntityValidator extends BaseValidator
         }
 
         $errorPath = null !== $constraint->errorPath ? $constraint->errorPath : $fields[0];
-        $this->context->addViolationAtSubPath($errorPath, $constraint->message, array(), $criteria[$fields[0]]);
+        $this->context->addViolationAt($errorPath, $constraint->message, array(), $criteria[$fields[0]]);
     }
 }
