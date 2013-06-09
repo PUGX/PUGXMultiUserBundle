@@ -55,7 +55,7 @@ class RegistrationManager
      * @param string $class
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function register($class)
+    public function register($class, $data = null)
     {
         $this->userDiscriminator->setClass($class);
         
@@ -71,7 +71,7 @@ class RegistrationManager
             $template = 'FOSUserBundle:Registration:register.html.'.$engine;
         }
         
-        $form = $this->formFactory->createForm();      
+        $form = $this->formFactory->createForm($data);      
         return $this->container->get('templating')->renderResponse($template, array(
             'form' => $form->createView(),
         ));
