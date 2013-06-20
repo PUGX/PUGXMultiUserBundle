@@ -15,6 +15,8 @@ class AuthenticationListenerTest extends \PHPUnit_Framework_TestCase
                 ->disableOriginalConstructor()->getMock();  
         $this->implicitLoginEvent = $this->getMockBuilder('FOS\UserBundle\Event\UserEvent')
                 ->disableOriginalConstructor()->getMock();                  
+		$this->switchUserEvent = $this->getMockBuilder('Symfony\Component\Security\Http\Event\SwitchUserEvent')
+				->disableOriginalConstructor()->getMock();
         $this->token = $this->getMockBuilder('Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken')
                 ->disableOriginalConstructor()->getMock();       
         $this->user = new User();  
@@ -38,4 +40,12 @@ class AuthenticationListenerTest extends \PHPUnit_Framework_TestCase
         
         $this->listener->onSecurityImplicitLogin($this->implicitLoginEvent);         
     }
+
+	public function testOnSecuritySwitchUser()
+	{
+		$this->switchUserEvent->expects($this->once())->method('getTargetUser')->will($this->returnValue($this->user));
+		$this->userDiscriminator->expects($this->exactly(1))->method('setClass')->with('PUGX\MultiUserBundle\Tests\Stub\User', true);
+
+		$this->listener->onSecuritySwitchUser($this->switchUserEvent);
+	}
 }

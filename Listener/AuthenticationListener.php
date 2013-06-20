@@ -8,6 +8,7 @@ use PUGX\MultiUserBundle\Model\UserDiscriminator;
 use Symfony\Component\Security\Http\SecurityEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
+use Symfony\Component\Security\Http\Event\SwitchUserEvent;
 
 class AuthenticationListener implements EventSubscriberInterface
 {
@@ -35,6 +36,7 @@ class AuthenticationListener implements EventSubscriberInterface
         return array(
             FOSUserEvents::SECURITY_IMPLICIT_LOGIN => 'onSecurityImplicitLogin',
             SecurityEvents::INTERACTIVE_LOGIN => 'onSecurityInteractiveLogin',
+            SecurityEvents::SWITCH_USER => 'onSecuritySwitchUser'
         );
     }
     
@@ -59,5 +61,14 @@ class AuthenticationListener implements EventSubscriberInterface
     public function onSecurityInteractiveLogin(InteractiveLoginEvent $event)
     {
         $this->discriminate($event->getAuthenticationToken()->getUser());
+    }
+    
+    /**
+     * 
+     * @param \Symfony\Component\Security\Http\Event\SwitchUserEvent $event
+     */
+    public function onSecuritySwitchUser(SwitchUserEvent $event)
+    {
+        $this->discriminate($event->getTargetUser());
     }
 }
