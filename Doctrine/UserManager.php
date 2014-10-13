@@ -17,16 +17,16 @@ use PUGX\MultiUserBundle\Model\UserDiscriminator;
  * @author eux (eugenio@netmeans.net)
  */
 class UserManager extends BaseUserManager
-{ 
+{
     /**
      *
-     * @var ObjectManager 
+     * @var ObjectManager
      */
     protected $om;
-        
+
     /**
      *
-     * @var UserDiscriminator 
+     * @var UserDiscriminator
      */
     protected $userDiscriminator;
 
@@ -44,10 +44,10 @@ class UserManager extends BaseUserManager
     {
         $this->om = $om;
         $this->userDiscriminator = $userDiscriminator;
-        
+
         parent::__construct($encoderFactory, $usernameCanonicalizer, $emailCanonicalizer, $om, $class);
     }
-    
+
     /**
      *
      * {@inheritDoc}
@@ -55,6 +55,18 @@ class UserManager extends BaseUserManager
     public function createUser()
     {
         return $this->userDiscriminator->createUser();
+    }
+
+    /**
+     *
+     * {@inheritDoc}
+     */
+    public function createUserByType($type)
+    {
+      $user = $this->userDiscriminator
+        ->createUserByType($type);
+
+        return $user;
     }
 
     /**
@@ -71,23 +83,23 @@ class UserManager extends BaseUserManager
     public function findUserBy(array $criteria)
     {
         $classes = $this->userDiscriminator->getClasses();
-                
+
         foreach ($classes as $class) {
 
             $repo = $this->om->getRepository($class);
-            
+
             if (!$repo) {
                 throw new \LogicException(sprintf('Repository "%s" not found', $class));
             }
-                        
+
             $user = $repo->findOneBy($criteria);
-            
+
             if ($user) {
                 $this->userDiscriminator->setClass($class);
                 return $user;
             }
         }
-        
+
         return null;
     }
 
@@ -119,14 +131,14 @@ class UserManager extends BaseUserManager
     protected function findConflictualUsers($value, array $fields)
     {
         $classes = $this->userDiscriminator->getClasses();
-                
+
         foreach ($classes as $class) {
 
             $repo = $this->om->getRepository($class);
-                        
+
             $users = $repo->findBy($this->getCriteria($value, $fields));
-            
-            if (count($users) > 0) {                
+
+            if (count($users) > 0) {
                 return $users;
             }
         }

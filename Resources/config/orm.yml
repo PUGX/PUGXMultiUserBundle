@@ -3,6 +3,15 @@ services:
     pugx_user.manager.orm_user_manager:
         class:     PUGX\MultiUserBundle\Doctrine\UserManager
         arguments: ["@security.encoder_factory", "@fos_user.util.username_canonicalizer", "@fos_user.util.email_canonicalizer", "@fos_user.entity_manager", %fos_user.model.user.class%, "@pugx_user.manager.user_discriminator"]
-        
+
+    # aliases
     pugx_user_manager:
         alias: pugx_user.manager.orm_user_manager
+
+    # user manipulator
+    pugx_multi_user.util.user_manipulator:
+        class: PUGX\MultiUserBundle\Util\UserManipulator
+        arguments:
+            userManager:  "@pugx_user_manager"
+            conf: %pugx_user.discriminator.conf%
+            userTypes: %pugx_user.discriminator.user_types%

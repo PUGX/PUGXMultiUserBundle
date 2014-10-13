@@ -6,159 +6,184 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 /**
  * Description of UserDiscriminator
- * 
+ *
  * @author leonardo proietti (leonardo.proietti@gmail.com)
  * @author eux (eugenio@netmeans.net)
  */
 class UserDiscriminator
 {
-    const SESSION_NAME = 'pugx_user.user_discriminator.class'; 
-    
+    const SESSION_NAME = 'pugx_user.user_discriminator.class';
+
     /**
      *
-     * @var SessionInterface 
+     * @var SessionInterface
      */
     protected $session;
-    
+
     /**
      *
-     * @var array 
+     * @var array Configuration built from the parameters in config file
      */
     protected $conf = array();
-    
+
     /**
      *
-     * @var Symfony\Component\Form\Form 
+     * @var array of user types. e.g. array('user_type' => 'user_entity', ..)
+     */
+    protected $userTypes = array();
+
+    /**
+     *
+     * @var Symfony\Component\Form\Form
      */
     protected $registrationForm = null;
-    
+
     /**
      *
-     * @var Symfony\Component\Form\Form 
+     * @var Symfony\Component\Form\Form
      */
     protected $profileForm = null;
-    
+
     /**
      *
-     * @var string 
+     * @var string
      */
     protected $class = null;
-    
+
     /**
      * Current form
-     * @var type 
+     * @var type
      */
     protected $form = null;
 
     /**
      *
      * @param SessionInterface $session
-     * @param array $parameters 
+     * @param array $conf The configuration of PUGXMultiUserBundle
+     * @param array $userTypes An array containing key-value pairs like this ('user_type' => 'user_entity')
      */
-    public function __construct(SessionInterface $session, array $parameters)
+    public function __construct(SessionInterface $session, array $conf, array $userTypes)
     {
-        $this->session = $session;        
-        $this->buildConfig($parameters);
+        $this->session = $session;
+        $this->conf = $conf;
+        $this->userTypes = $userTypes;
     }
-    
+
     /**
      *
-     * @return array 
+     * @return array
      */
     public function getClasses()
-    {        
+    {
         $classes = array();
         foreach ($this->conf as $entity => $conf) {
             $classes[] = $entity;
         }
-        
+
         return $classes;
     }
-        
+
     /**
      *
-     * @param string $class 
+     * @param string $class
      */
     public function setClass($class, $persist = false)
     {
         if (!in_array($class, $this->getClasses())) {
             throw new \LogicException(sprintf('Impossible to set the class discriminator, because the class "%s" is not present in the entities list', $class));
         }
-        
+
         if ($persist) {
             $this->session->set(static::SESSION_NAME, $class);
         }
-        
+
         $this->class = $class;
     }
-    
+
     /**
      *
-     * @return string 
+     * @return string
      */
     public function getClass()
-    {       
+    {
         if (!is_null($this->class)) {
             return $this->class;
         }
-        
+
         $storedClass = $this->session->get(static::SESSION_NAME, null);
 
         if ($storedClass) {
             $this->class = $storedClass;
         }
-        
+
         if (is_null($this->class)) {
             $entities = $this->getClasses();
             $this->class = $entities[0];
         }
-        
+
         return $this->class;
     }
-    
+
     /**
      *
-     * @return type 
+     * @return type
      */
     public function createUser()
     {
         $factory = $this->getUserFactory();
         $user    = $factory::build($this->getClass());
-        
+
         return $user;
     }
-    
+
     /**
-     * 
+     *
+     * @return type
+     */
+    public function createUserByType($type)
+    {
+        /** Check that the user type exists */
+        if (!array_key_exists($type, $this->userTypes)){
+            throw new \InvalidArgumentException('This user type does not exist');
+        }
+        $class = $this->userTypes[$type];
+        $factory = $this->getUserFactory();
+        $user    = $factory::build($class);
+
+        return $user;
+    }
+
+    /**
+     *
      * @return string
      */
     public function getUserFactory()
     {
         return $this->conf[$this->getClass()]['factory'];
     }
-    
+
     /**
-     * 
+     *
      * @param string $name
-     * @return 
+     * @return
      * @throws \InvalidArgumentException
      */
     public function getFormType($name)
     {
         $class = $this->getClass();
         $className = $this->conf[$class][$name]['form']['type'];
-        
+
         if (!class_exists($className)) {
             throw new \InvalidArgumentException(sprintf('UserDiscriminator, error getting form type : "%s" not found', $className));
         }
 
         $type = new $className($class);
-        
+
         return $type;
     }
-    
+
     /**
-     * 
+     *
      * @param string $name
      * @return string
      */
@@ -166,9 +191,9 @@ class UserDiscriminator
     {
         return $this->conf[$this->getClass()][$name]['form']['name'];
     }
-    
+
     /**
-     * 
+     *
      * @param type $name
      * @return type
      */
@@ -178,48 +203,12 @@ class UserDiscriminator
     }
 
     /**
-     * 
+     *
      * @return string
      */
     public function getTemplate($name)
     {
         return $this->conf[$this->getClass()][$name]['template'];
     }
-    
-    /**
-     *
-     * @param array $entities
-     * @param array $registrationForms
-     * @param array $profileForms 
-     */
-    protected function buildConfig(array $users)
-    {
-        foreach ($users as $user) {
-            
-            $class = $user['entity']['class'];
-            
-            if (!class_exists($class)) {
-                throw new \InvalidArgumentException(sprintf('UserDiscriminator, configuration error : "%s" not found', $class));
-            }
-            
-            $this->conf[$class] = array(
-                    'factory' => $user['entity']['factory'],
-                    'registration' => array(
-                        'form' => array(
-                            'type' => $user['registration']['form']['type'],
-                            'name' => $user['registration']['form']['name'],
-                            'validation_groups' => $user['registration']['form']['validation_groups'],
-                        ),                        
-                        'template' => $user['registration']['template'],
-                    ),
-                    'profile' => array(
-                        'form' => array(
-                            'type' => $user['profile']['form']['type'],
-                            'name' => $user['profile']['form']['name'],
-                            'validation_groups' => $user['profile']['form']['validation_groups'],
-                        )
-                    )
-                );
-        }
-    }
+
 }

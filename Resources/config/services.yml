@@ -1,44 +1,54 @@
 services:
-        
+
     # to discriminate users types
     pugx_user.manager.user_discriminator:
         class:     PUGX\MultiUserBundle\Model\UserDiscriminator
-        arguments: ["@session", %pugx_user_discriminator_users%]       
-        
+        arguments:
+             session: "@session"
+             conf: %pugx_user.discriminator.conf%
+             userTypes: %pugx_user.discriminator.user_types%
+
     #manage registration
     pugx_multi_user.registration_manager:
         class: PUGX\MultiUserBundle\Controller\RegistrationManager
         arguments: ["@pugx_user.manager.user_discriminator", "@service_container", "@pugx_multi_user.registration_controller", "@fos_user.registration.form.factory"]
-        
-    #simply wrap
+
+    #manage profile
+    pugx_multi_user.profile_manager:
+        class: PUGX\MultiUserBundle\Controller\ProfileManager
+        arguments: ["@pugx_user.manager.user_discriminator", "@service_container", "@pugx_multi_user.profile_controller", "@fos_user.profile.form.factory"]
+
+    #registration controller
     pugx_multi_user.registration_controller:
       class: FOS\UserBundle\Controller\RegistrationController
-      
+
+    #profile controller
+    pugx_multi_user.profile_controller:
+      class: FOS\UserBundle\Controller\ProfileController
+
     #form factories
     pugx_multi_user.registration_form_factory:
       class: PUGX\MultiUserBundle\Form\FormFactory
       arguments: ["@pugx_user.manager.user_discriminator", "@form.factory", "registration"]
-      
+
     pugx_multi_user.profile_form_factory:
       class: PUGX\MultiUserBundle\Form\FormFactory
       arguments: ["@pugx_user.manager.user_discriminator", "@form.factory", "profile"]
-      
+
     #listener
     pugx_multi_user.listener.authentication:
       class:     PUGX\MultiUserBundle\Listener\AuthenticationListener
       arguments: ["@pugx_user.manager.user_discriminator"]
       tags:
             - { name: kernel.event_subscriber }
-            
+
     #validator
     pugx_multi_user.orm.validator.unique:
         class: PUGX\MultiUserBundle\Validator\Constraints\UniqueEntityValidator
         arguments: [ "@doctrine" ]
         tags:
             - { name: validator.constraint_validator, alias: pugx.orm.validator.unique }        
-                
+
     # alias
     pugx_user_discriminator:
         alias: pugx_user.manager.user_discriminator
-    
-    
