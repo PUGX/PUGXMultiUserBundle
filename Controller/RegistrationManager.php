@@ -57,24 +57,30 @@ class RegistrationManager
      * @param string $class
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function register($class)
+    public function register($class, $vars = null)
     {
         $this->userDiscriminator->setClass($class);
-        
+
         $this->controller->setContainer($this->container);
-        $result = $this->controller->registerAction($this->container->get('request'));        
+        $result = $this->controller->registerAction($this->container->get('request'));
         if ($result instanceof RedirectResponse) {
             return $result;
         }
-        
+
         $template = $this->userDiscriminator->getTemplate('registration');
         if (is_null($template)) {
             $template = 'FOSUserBundle:Registration:register.html.twig';
         }
-        
-        $form = $this->formFactory->createForm();      
-        return $this->container->get('templating')->renderResponse($template, array(
-            'form' => $form->createView(),
-        ));
+
+        $form = $this->formFactory->createForm();
+        $variables = array (
+            'form' => $form->createView()
+        );
+
+        if (!empty($vars) && is_array($vars)) {
+            $variables = array_merge($variables, $vars);
+        }
+
+        return $this->container->get('templating')->renderResponse($template, $variables);
     }
 }
