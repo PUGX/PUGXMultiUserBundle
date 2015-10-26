@@ -71,7 +71,7 @@ class UserDiscriminator
         foreach ($this->conf as $entity => $conf) {
             $classes[] = $entity;
         }
-        
+
         return $classes;
     }
         
@@ -147,13 +147,13 @@ class UserDiscriminator
     {
         $class = $this->getClass();
         $className = $this->conf[$class][$name]['form']['type'];
+        $options = $this->conf[$class]['options'];
         
         if (!class_exists($className)) {
             throw new \InvalidArgumentException(sprintf('UserDiscriminator, error getting form type : "%s" not found', $className));
         }
 
-        $type = new $className($class);
-        
+        $type = new $className($class, $options);
         return $type;
     }
     
@@ -185,7 +185,7 @@ class UserDiscriminator
     {
         return $this->conf[$this->getClass()][$name]['template'];
     }
-    
+
     /**
      *
      * @param array $entities
@@ -219,7 +219,8 @@ class UserDiscriminator
                             'validation_groups' => $user['profile']['form']['validation_groups'],
                         ),
                         'template' => $user['profile']['template'],
-                    )
+                    ),
+                    'options' => $user['options']
                 );
         }
     }

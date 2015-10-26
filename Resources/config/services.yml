@@ -47,4 +47,15 @@ services:
     # alias
     pugx_user_discriminator:
         alias: pugx_user.manager.user_discriminator
-    
+
+    pugx_multi_user.registration.form.type:
+        class: PUGX\MultiUserBundle\Form\RegistrationFormType
+        arguments: [%fos_user.model.user.class%]
+        tags:
+            - { name: form.type, alias: fos_user_registration }        
+
+    pugx_multi_user.profile.form.type:
+        class: PUGX\MultiUserBundle\Form\ProfileFormType
+        arguments: [%fos_user.model.user.class%]
+        tags:
+            - { name: form.type, alias: fos_user_profile }        
