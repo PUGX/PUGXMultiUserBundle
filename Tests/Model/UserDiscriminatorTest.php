@@ -43,7 +43,8 @@ class UserDiscriminatorTest extends \PHPUnit_Framework_TestCase
                     'validation_groups' => array('Profile', 'Default')
                 ),
                 'template' => 'AcmeUserBundle:Profile:user_two.form.html.twig'
-            )
+            ),
+            'options' => []
         );
 
         $anotherUserParameters = array(
@@ -66,7 +67,8 @@ class UserDiscriminatorTest extends \PHPUnit_Framework_TestCase
                     'validation_groups' => array('Profile', 'Default')
                 ),
                 'template' => 'AcmeUserBundle:Profile:user_two.form.html.twig'
-            )
+            ),
+            'options' => []
         );
         
         $this->parameters = array('user_one' => $userParameters, 'user_two' => $anotherUserParameters);
@@ -95,7 +97,8 @@ class UserDiscriminatorTest extends \PHPUnit_Framework_TestCase
                 'options' => array(
                     'validation_groups' => array('Profile', 'Default')
                 )
-            )
+            ),
+            'options' => []
         );
         
         $parameters     = array('user' => $userParameters);
