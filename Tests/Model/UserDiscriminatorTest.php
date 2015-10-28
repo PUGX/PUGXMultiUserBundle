@@ -68,7 +68,7 @@ class UserDiscriminatorTest extends \PHPUnit_Framework_TestCase
                 ),
                 'template' => 'AcmeUserBundle:Profile:user_two.form.html.twig'
             ),
-            'options' => array()
+            'options' => array('option1' => true)
         );
         
         $this->parameters = array('user_one' => $userParameters, 'user_two' => $anotherUserParameters);
@@ -125,6 +125,12 @@ class UserDiscriminatorTest extends \PHPUnit_Framework_TestCase
     {  
         $this->discriminator->setClass('PUGX\MultiUserBundle\Tests\Stub\AnotherUser');        
         $this->assertEquals('PUGX\MultiUserBundle\Tests\Stub\AnotherUser', $this->discriminator->getClass());
+    }
+
+    public function testGetUserOptions()
+    {
+        $this->discriminator->setClass('PUGX\MultiUserBundle\Tests\Stub\AnotherUser');
+        $this->assertEquals(array('option1' => true), $this->discriminator->getUserOptions());
     }
     
     public function testSetClassPersist() 

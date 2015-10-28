@@ -136,6 +136,18 @@ class UserDiscriminator
     {
         return $this->conf[$this->getClass()]['factory'];
     }
+
+    /**
+     *
+     * @return array
+     */
+    public function getUserOptions()
+    {
+        $class = $this->getClass();
+        $options = $this->conf[$class]['options'];
+
+        return $options;
+    }
     
     /**
      * 
