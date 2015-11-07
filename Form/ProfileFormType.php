@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace FOS\UserBundle\Form\Type;
+namespace PUGX\MultiUserBundle\Form;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -19,7 +19,7 @@ use Symfony\Component\Security\Core\Validator\Constraints\UserPassword;
 
 class ProfileFormType extends AbstractType
 {
-    private $class;
+    protected $class;
     protected $options;
 
     /**
@@ -47,7 +47,7 @@ class ProfileFormType extends AbstractType
     {
         $resolver->setDefaults(array(
             'data_class' => $this->class,
-            'intention'  => 'profile',
+            'intention' => 'profile',
         ));
     }
 

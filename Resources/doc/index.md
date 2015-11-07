@@ -1,7 +1,7 @@
 PUGXMultiUserBundle Documentation
 ==================================
 
-PUGXMultiUserBundle came by the need to use different types of users using only one fos_user service.
+PUGXMultiUserBundle came by the need to have users with different attributes using only one fos_user service.
 In practice it is an hack that forces FOSUser bundle through custom UserManager, controllers, and forms handlers.
 
 It's just a lazy way to use for free most of the functionality of FOSUserBundle.
@@ -201,6 +201,8 @@ In fact is the discriminator that has responsibility to get the user class depen
                 type: Acme\UserBundle\Form\Type\ProfileUserOneFormType
                 name: fos_user_profile_form
                 validation_groups:  [Profile, Default]
+    #         profile template is optional
+              template: AcmeUserBundle:Profile:user_one.form.html.twig
     #       options- is optional for passing array of options to templates
             options:            
         user_two:
@@ -213,6 +215,7 @@ In fact is the discriminator that has responsibility to get the user class depen
             profile:
               form: 
                 type: Acme\UserBundle\Form\Type\ProfileUserTwoFormType
+              template: AcmeUserBundle:Profile:user_one.form.html.twig
 ```
 
 
@@ -237,6 +240,19 @@ user_two_registration:
 
 #### Controllers
 
+Sometimes your business logic requires that you render more than one template when you register a user. You can create an array of the necessary templates in the controller.  The array of templates is passed with the variable `$templates`.  It can then be rendered in your registration template (e.g., `AcmeUserBundle:Registration:user_one.form.html.twig` using the following snippet:
+
+```twig
+
+    {% for template in templates %}
+        {% include template %}
+    {% endfor %}
+```
+
+Just be sure to render all the necessary `fos_user` user fields in the resulting templates.
+
+If you do not require multiple templates, the `$templates` variable should be omitted in the controller.
+
 RegistrationUserOneController
 
 ``` php
@@ -248,14 +264,21 @@ RegistrationUserOneController
     use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
         class RegistrationUserOneController extends Controller
-    {
-        public function registerAction()
         {
-            return $this->container
-                    ->get('pugx_multi_user.registration_manager')
-                    ->register('Acme\UserBundle\Entity\UserOne');
+            public function registerAction()
+            {
+                if (condition1) {
+                    $templates[] = 'AcmeUserBundle:Registration:first.form.html.twig';
+                }
+                 if (condition2) {
+                    $templates[] = 'AcmeUserBundle:Registration:second.form.html.twig';
+                }
+                
+               return $this->container
+                        ->get('pugx_multi_user.registration_manager')
+                        ->register('Acme\UserBundle\Entity\UserOne', $templates);
+            }
         }
-    }
 ```
 
 RegistrationUserTwoController
@@ -275,6 +298,64 @@ RegistrationUserTwoController
             return $this->container
                     ->get('pugx_multi_user.registration_manager')
                     ->register('Acme\UserBundle\Entity\UserTwo');
+        }
+    }
+```
+
+ProfileController
+
+The ProfileController also allows the addition of templates as in the RegistrationController.  If additional templates are not required it is not necessary to extend the ProfileController.
+
+``` php
+
+    <?php
+
+    namespace Acme\UserBundle\Controller;
+
+
+    use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+    use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+
+    /**
+    * @Route("/profile")
+    */
+    class ProfileController extends Controller
+    {
+        /**
+         * 
+         * @Route("/edit")
+         */
+        public function editAction()
+        {
+            $user = $this->getUser();
+            $class = get_class($user);
+            switch ($class) {
+                case 'Acme\UserBundle\Entity\UserOne':
+                    return $this->userOneProfileAction();
+                    break;
+                case 'Acme\UserBundle\Entity\UserTwo':
+                    return $this->userTwoProfileAction();
+                    break;
+                default:
+                    break;
+        }
+
+        private function userOneProfileAction()
+        {
+            //create optional template array here
+            //omit $templates parameter below if not used
+            return $this->container
+                    ->get('pugx_multi_user.profile_manager')
+                    ->edit('Acme\UserBundle\Entity\UserOne', $templates);
+        }
+    
+        private function userTwoProfileAction()
+        {
+            //create optional template array here
+            //omit $templates parameter below if not used
+            return $this->container
+                    ->get('pugx_multi_user.profile_manager')
+                    ->edit('Acme\UserBundle\Entity\UserTwo', $templates);
         }
     }
 ```
@@ -318,7 +399,7 @@ You can override these forms as described in the FOSUserBundle documentation if 
 
     use PUGX\MultiUserBundle\Form\RegistrationFormType as BaseType;
 
-    class SomeFormType extends BaseType
+    class NewRegistrationFormType extends BaseType
     {
     ...
     }

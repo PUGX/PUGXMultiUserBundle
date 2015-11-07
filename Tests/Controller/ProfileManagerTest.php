@@ -2,9 +2,9 @@
 
 namespace PUGX\MultiUserBundle\Tests\Controller;
 
-use PUGX\MultiUserBundle\Controller\RegistrationManager;
+use PUGX\MultiUserBundle\Controller\ProfileManager;
 
-class RegistrationManagerTest extends \PHPUnit_Framework_TestCase
+class ProfileManagerTest extends \PHPUnit_Framework_TestCase
 {
     public function setUp()
     {
@@ -14,7 +14,7 @@ class RegistrationManagerTest extends \PHPUnit_Framework_TestCase
         $this->container = $this->getMockBuilder('Symfony\Component\DependencyInjection\ContainerInterface')
                 ->disableOriginalConstructor()->getMock();
 
-        $this->controller = $this->getMockBuilder('FOS\UserBundle\Controller\RegistrationController')
+        $this->controller = $this->getMockBuilder('FOS\UserBundle\Controller\ProfileController')
                 ->disableOriginalConstructor()->getMock();
 
         $this->formFactory = $this->getMockBuilder('PUGX\MultiUserBundle\Form\FormFactory')
@@ -35,7 +35,7 @@ class RegistrationManagerTest extends \PHPUnit_Framework_TestCase
         $this->formView = $this->getMockBuilder('Symfony\Component\Form\FormView')
                 ->disableOriginalConstructor()->getMock();
 
-        $this->userManager = new RegistrationManager($this->discriminator, $this->container, $this->controller, $this->formFactory);
+        $this->userManager = new ProfileManager($this->discriminator, $this->container, $this->controller, $this->formFactory);
     }
 
     public function common()
@@ -57,35 +57,35 @@ class RegistrationManagerTest extends \PHPUnit_Framework_TestCase
                 ->will($this->returnValue($this->request));
     }
 
-    public function testRegisterReturnRedirectResponse()
+    public function testProfileReturnRedirectResponse()
     {
         $this->common();
 
         $this->controller
                 ->expects($this->exactly(1))
-                ->method('registerAction')
+                ->method('editAction')
                 ->with($this->request)
                 ->will($this->returnValue($this->redirectResponse));
 
-        $result = $this->userManager->register('MyUser');
+        $result = $this->userManager->edit('MyUser');
 
         $this->assertSame($result, $this->redirectResponse);
     }
 
-    public function testRegisterReturnDefaultTemplate()
+    public function testProfileReturnDefaultTemplate()
     {
         $this->common();
 
         $this->controller
                 ->expects($this->exactly(1))
-                ->method('registerAction')
+                ->method('editAction')
                 ->with($this->request)
                 ->will($this->returnValue(null));
 
         $this->discriminator
                 ->expects($this->exactly(1))
                 ->method('getTemplate')
-                ->with('registration')
+                ->with('profile')
                 ->will($this->returnValue(null));
 
         $this->formFactory
@@ -102,31 +102,31 @@ class RegistrationManagerTest extends \PHPUnit_Framework_TestCase
         $this->twig
                 ->expects($this->exactly(1))
                 ->method('renderResponse')
-                ->with('FOSUserBundle:Registration:register.html.twig', array('form' => $this->formView, 'templates' => array()));
+                ->with('FOSUserBundle:Profile:edit.html.twig', array('form' => $this->formView, 'templates' => array()));
 
         $this->form
                 ->expects($this->exactly(1))
                 ->method('createView')
                 ->will($this->returnValue($this->formView));
 
-        $result = $this->userManager->register('MyUser');
+        $result = $this->userManager->edit('MyUser');
     }
 
-    public function testRegisterReturnSpecificTemplate()
+    public function testProfileReturnSpecificTemplate()
     {
         $this->common();
 
         $this->controller
                 ->expects($this->exactly(1))
-                ->method('registerAction')
+                ->method('editAction')
                 ->with($this->request)
                 ->will($this->returnValue(null));
 
         $this->discriminator
                 ->expects($this->exactly(1))
                 ->method('getTemplate')
-                ->with('registration')
-                ->will($this->returnValue('PUGXMultiUserBundle:Registration:register.html.twig'));
+                ->with('profile')
+                ->will($this->returnValue('PUGXMultiUserBundle:Profile:edit.html.twig'));
 
         $this->formFactory
                 ->expects($this->exactly(1))
@@ -142,13 +142,13 @@ class RegistrationManagerTest extends \PHPUnit_Framework_TestCase
         $this->twig
                 ->expects($this->exactly(1))
                 ->method('renderResponse')
-                ->with('PUGXMultiUserBundle:Registration:register.html.twig', array('form' => $this->formView, 'templates' => array()));
+                ->with('PUGXMultiUserBundle:Profile:edit.html.twig', array('form' => $this->formView, 'templates' => array()));
 
         $this->form
                 ->expects($this->exactly(1))
                 ->method('createView')
                 ->will($this->returnValue($this->formView));
 
-        $result = $this->userManager->register('MyUser', $templates = array());
+        $result = $this->userManager->edit('MyUser', $templates = array());
     }
 }
