@@ -1,4 +1,5 @@
 <?php
+
 namespace PUGX\MultiUserBundle\Controller;
 
 use FOS\UserBundle\Controller\ProfileController;
@@ -30,10 +31,10 @@ class ProfileManager
     protected $formFactory;
 
     /**
-     * @param UserDiscriminator $userDiscriminator
+     * @param UserDiscriminator  $userDiscriminator
      * @param ContainerInterface $container
-     * @param ProfileController $controller
-     * @param FormFactory $formFactory
+     * @param ProfileController  $controller
+     * @param FormFactory        $formFactory
      */
     public function __construct(
         UserDiscriminator $userDiscriminator,
@@ -49,16 +50,17 @@ class ProfileManager
 
     /**
      * @param string $class
+     *
      * @return RedirectResponse
      */
-    public function edit($class)
+    public function edit($class, $templates = array())
     {
         $this->userDiscriminator->setClass($class);
 
         $this->controller->setContainer($this->container);
         $result = $this->controller->editAction($this->container->get('request'));
         if ($result instanceof RedirectResponse) {
-            return $this->controller->redirect($this->controller->get('request')->getRequestUri());
+            return $result;
         }
 
         $template = $this->userDiscriminator->getTemplate('profile');
@@ -67,8 +69,11 @@ class ProfileManager
         }
 
         $form = $this->formFactory->createForm();
-        return $this->container->get('templating')->renderResponse($template, array(
-            'form' => $form->createView(),
+
+        return $this->container->get('templating')->renderResponse($template,
+                array(
+                'form' => $form->createView(),
+                'templates' => $templates,
         ));
     }
 }

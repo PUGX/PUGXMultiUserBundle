@@ -18,6 +18,16 @@ class OverrideServiceCompilerPass implements CompilerPassInterface
                 $container, 
                 'fos_user.profile.form.factory', 
                 'pugx_multi_user.profile_form_factory');
+
+        $this->changeService(
+                $container,
+                'fos_user.registration.form.type',
+                'pugx_multi_user.registration.form.type');
+
+        $this->changeService(
+                $container,
+                'fos_user.profile.form.type',
+                'pugx_multi_user.profile.form.type');
     }
     
     private function changeService($container, $serviceName, $newServiceName)
