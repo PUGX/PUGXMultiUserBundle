@@ -45,7 +45,7 @@ Add the following lines in your composer.json:
 Now, run the composer to download the bundle:
 
 ``` bash
-$ php composer.phar update pugx/multi-user-bundle
+$ php composer.phar require pugx/multi-user-bundle
 ```
 
 
