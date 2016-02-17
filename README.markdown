@@ -1,3 +1,14 @@
+##Newton-Labs Version
+
+This version has been modified to resolve the symfony bug with [FOSUserBundle](https://github.com/FriendsOfSymfony/FOSUserBundle/issues/2048).
+
+Install this version:
+``` bash
+$ php composer.phar require fcpauldiaz/multi-user-bundle
+```
+
+Nothing else has been modified.
+
 PUGXMultiUserBundle
 =============
 
