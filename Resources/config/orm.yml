@@ -1,8 +1,8 @@
 services:
     # custom fosuser user manager    
-    pugx_user.manager.orm_user_manager:
-        class:     PUGX\MultiUserBundle\Doctrine\UserManager
-        arguments: ["@security.encoder_factory", "@fos_user.util.username_canonicalizer", "@fos_user.util.email_canonicalizer", "@fos_user.object_manager", %fos_user.model.user.class%, "@pugx_user.manager.user_discriminator"]
+    massil_user.manager.orm_user_manager:
+        class:     Massil\MultiUserBundle\Doctrine\UserManager
+        arguments: ["@security.encoder_factory", "@fos_user.util.username_canonicalizer", "@fos_user.util.email_canonicalizer", "@fos_user.object_manager", %fos_user.model.user.class%, "@massil_user.manager.user_discriminator"]
         
-    pugx_user_manager:
-        alias: pugx_user.manager.orm_user_manager
+    massil_user_manager:
+        alias: massil_user.manager.orm_user_manager

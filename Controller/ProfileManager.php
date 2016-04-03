@@ -1,9 +1,9 @@
 <?php
-namespace PUGX\MultiUserBundle\Controller;
+namespace Massil\MultiUserBundle\Controller;
 
 use FOS\UserBundle\Controller\ProfileController;
-use PUGX\MultiUserBundle\Form\FormFactory;
-use PUGX\MultiUserBundle\Model\UserDiscriminator;
+use Massil\MultiUserBundle\Form\FormFactory;
+use Massil\MultiUserBundle\Model\UserDiscriminator;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 

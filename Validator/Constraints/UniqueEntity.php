@@ -1,6 +1,6 @@
 <?php
 
-namespace PUGX\MultiUserBundle\Validator\Constraints;
+namespace Massil\MultiUserBundle\Validator\Constraints;
 
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity as BaseConstraint;
 
@@ -11,6 +11,6 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity as BaseConstraint
  */
 class UniqueEntity extends BaseConstraint
 {
-    public $service = 'pugx.orm.validator.unique';
+    public $service = 'massil.orm.validator.unique';
     public $targetClass = null;
 }

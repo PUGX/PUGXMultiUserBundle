@@ -1,7 +1,7 @@
-PUGXMultiUserBundle Documentation
+MassilMultiUserBundle Documentation
 ==================================
 
-PUGXMultiUserBundle came by the need to use different types of users using only one fos_user service.
+MassilMultiUserBundle came by the need to use different types of users using only one fos_user service.
 In practice it is an hack that forces FOSUser bundle through custom UserManager, controllers, and forms handlers.
 
 It's just a lazy way to use for free most of the functionality of FOSUserBundle.
@@ -17,16 +17,16 @@ This version of the bundle requires Symfony dev-master and FOSUserBundle dev-mas
 
 ## Installation
 
-1. Download PUGXMultiUserBundle
+1. Download MassilMultiUserBundle
 2. Enable the Bundle
 3. Create your Entities
-4. Configure the FOSUserBundle (PUGXMultiUserBundle params)
+4. Configure the FOSUserBundle (MassilMultiUserBundle params)
 5. Configure parameters for UserDiscriminator
 6. Create your controllers
 7. Using the User Manager
 
 
-### 1. Download PUGXMultiUserBundle
+### 1. Download MassilMultiUserBundle
 
 **Using composer**
 
@@ -61,7 +61,7 @@ public function registerBundles()
 {
     $bundles = array(
         // ...
-        new PUGX\MultiUserBundle\PUGXMultiUserBundle(),
+        new Massil\MultiUserBundle\MassilMultiUserBundle(),
         new FOS\UserBundle\FOSUserBundle(),
     );
 }
@@ -108,7 +108,7 @@ UserOne
 namespace Acme\UserBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use PUGX\MultiUserBundle\Validator\Constraints\UniqueEntity;
+use Massil\MultiUserBundle\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity
@@ -135,7 +135,7 @@ UserTwo
 namespace Acme\UserBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use PUGX\MultiUserBundle\Validator\Constraints\UniqueEntity;
+use Massil\MultiUserBundle\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity
@@ -157,9 +157,9 @@ class UserTwo extends User
 You must also create forms for your entities:
 see [Overriding Default FOSUserBundle Forms] (https://github.com/FriendsOfSymfony/FOSUserBundle/blob/master/Resources/doc/overriding_forms.rst)
 
-### 4. Configure the FOSUserBundle (PUGXMultiUserBundle params)
+### 4. Configure the FOSUserBundle (MassilMultiUserBundle params)
 
-Keep in mind that PUGXMultiUserBundle overwrites user_class via UserDiscriminator
+Keep in mind that MassilMultiUserBundle overwrites user_class via UserDiscriminator
 but it does it only in controllers and forms handlers; in the other cases (command, sonata integration, etc)
 it still uses the user_class configured in the config.
 
@@ -170,19 +170,19 @@ fos_user:
     firewall_name: main
     user_class: Acme\UserBundle\Entity\User
     service:
-        user_manager: pugx_user_manager
+        user_manager: massil_user_manager
 ```
 
 **Note:**
 > Acme\UserBundle\Entity\User must be an abstract class, because you don't have to use it.
 In fact is the discriminator that has responsibility to get the user class depending on context.
 
-### 5. Configure the PUGXMultiUserBundle
+### 5. Configure the MassilMultiUserBundle
 
 ``` yaml
 # Acme/UserBundle/Resources/config/config.yml
 
-pugx_multi_user:
+massil_multi_user:
   users:
     user_one:
         entity: 
@@ -247,7 +247,7 @@ class RegistrationUserOneController extends Controller
     public function registerAction()
     {
         return $this->container
-                    ->get('pugx_multi_user.registration_manager')
+                    ->get('massil_multi_user.registration_manager')
                     ->register('Acme\UserBundle\Entity\UserOne');
     }
 }
@@ -267,7 +267,7 @@ class RegistrationUserTwoController extends Controller
     public function registerAction()
     {
         return $this->container
-                    ->get('pugx_multi_user.registration_manager')
+                    ->get('massil_multi_user.registration_manager')
                     ->register('Acme\UserBundle\Entity\UserTwo');
     }
 }
@@ -305,10 +305,10 @@ if you need creat a custom FormType you have to inject the discriminator.
 Creating a new UserOne:
 
 ``` php
-$discriminator = $this->container->get('pugx_user.manager.user_discriminator');
+$discriminator = $this->container->get('massil_user.manager.user_discriminator');
 $discriminator->setClass('Acme\UserBundle\Entity\UserOne');
 
-$userManager = $this->container->get('pugx_user_manager');
+$userManager = $this->container->get('massil_user_manager');
 
 $userOne = $userManager->createUser();
 

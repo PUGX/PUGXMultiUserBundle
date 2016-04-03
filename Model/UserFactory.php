@@ -1,8 +1,8 @@
 <?php
 
-namespace PUGX\MultiUserBundle\Model;
+namespace Massil\MultiUserBundle\Model;
 
-use PUGX\MultiUserBundle\Model\UserFactoryInterface;
+use Massil\MultiUserBundle\Model\UserFactoryInterface;
 
 /**
  * @author leonardo proietti (leonardo.proietti@gmail.com)
@@ -12,7 +12,7 @@ class UserFactory implements UserFactoryInterface
     /**
      *
      * @param type $class
-     * @return \PUGX\MultiUserBundle\Model\class 
+     * @return \Massil\MultiUserBundle\Model\class 
      */
     public static function build($class)
     {        

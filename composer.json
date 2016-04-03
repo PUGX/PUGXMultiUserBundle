@@ -1,14 +1,14 @@
 {
-    "name": "pugx/multi-user-bundle",
+    "name": "massil/multi-user-bundle",
     "type": "symfony-bundle",
-    "description": "Symfony PUGXMultiUserBundle",
+    "description": "Symfony MassilMultiUserBundle",
     "keywords": ["user management multi user management"],
     "homepage": "https://github.com/PUGX",
     "license": "MIT",
     "authors": [
         {
-            "name": "Leonardo Proietti",
-            "email": "leonardo.proietti@gmail.com"
+            "name": "Massil Korichi",
+            "email": "korichi.massil31@gmail.com"
         },
         {
             "name": "Community",
@@ -27,9 +27,9 @@
     "suggest": {
     },
     "autoload": {
-        "psr-0": { "PUGX\\MultiUserBundle": "" }
+        "psr-0": { "Massil\\MultiUserBundle": "" }
     },
-    "target-dir": "PUGX/MultiUserBundle",
+    "target-dir": "Massil/MultiUserBundle",
     "extra": {
         "branch-alias": {
             "dev-master": "3.0.x-dev"

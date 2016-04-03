@@ -1,11 +1,11 @@
 <?php
 
-namespace PUGX\MultiUserBundle\Listener;
+namespace Massil\MultiUserBundle\Listener;
 
 use Doctrine\Common\Util\ClassUtils;
 use FOS\UserBundle\Event\UserEvent;
 use FOS\UserBundle\FOSUserEvents;
-use PUGX\MultiUserBundle\Model\UserDiscriminator;
+use Massil\MultiUserBundle\Model\UserDiscriminator;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
 use Symfony\Component\Security\Http\Event\SwitchUserEvent;

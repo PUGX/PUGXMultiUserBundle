@@ -1,12 +1,12 @@
 <?php
 
-namespace PUGX\MultiUserBundle;
+namespace Massil\MultiUserBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
-use PUGX\MultiUserBundle\DependencyInjection\Compiler\OverrideServiceCompilerPass;
+use Massil\MultiUserBundle\DependencyInjection\Compiler\OverrideServiceCompilerPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
-class PUGXMultiUserBundle extends Bundle
+class MassilMultiUserBundle extends Bundle
 {
     public function build(ContainerBuilder $container)
     {

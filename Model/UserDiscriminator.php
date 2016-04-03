@@ -1,6 +1,6 @@
 <?php
 
-namespace PUGX\MultiUserBundle\Model;
+namespace Massil\MultiUserBundle\Model;
 
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
@@ -12,7 +12,7 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
  */
 class UserDiscriminator
 {
-    const SESSION_NAME = 'pugx_user.user_discriminator.class'; 
+    const SESSION_NAME = 'massil_user.user_discriminator.class'; 
     
     /**
      *

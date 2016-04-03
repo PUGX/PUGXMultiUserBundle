@@ -1,4 +1,4 @@
-PUGXMultiUserBundle
+MassilMultiUserBundle
 =============
 
 The PUGXMultiUserBundle extends FOSUserBundle adding the feature to handle users of different types.

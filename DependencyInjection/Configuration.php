@@ -1,6 +1,6 @@
 <?php
 
-namespace PUGX\MultiUserBundle\DependencyInjection;
+namespace Massil\MultiUserBundle\DependencyInjection;
 
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
@@ -18,7 +18,7 @@ class Configuration implements ConfigurationInterface
     public function getConfigTreeBuilder()
     {
         $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root('pugx_multi_user');
+        $rootNode = $treeBuilder->root('massil_multi_user');
 
         $supportedDrivers = array('orm');
         
@@ -39,7 +39,7 @@ class Configuration implements ConfigurationInterface
                             ->arrayNode('entity')
                                 ->children()
                                     ->scalarNode('class')->isRequired()->cannotBeEmpty()->end()
-                                    ->scalarNode('factory')->defaultValue('PUGX\MultiUserBundle\Model\UserFactory')->end()
+                                    ->scalarNode('factory')->defaultValue('Massil\MultiUserBundle\Model\UserFactory')->end()
                                 ->end()              
                             ->end()
                         ->end()

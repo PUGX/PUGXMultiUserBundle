@@ -1,6 +1,6 @@
 <?php
 
-namespace PUGX\MultiUserBundle\Model;
+namespace Massil\MultiUserBundle\Model;
 
 interface UserFactoryInterface
 {

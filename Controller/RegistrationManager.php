@@ -1,18 +1,18 @@
 <?php
 
-namespace PUGX\MultiUserBundle\Controller;
+namespace Massil\MultiUserBundle\Controller;
 
-use PUGX\MultiUserBundle\Model\UserDiscriminator;
+use Massil\MultiUserBundle\Model\UserDiscriminator;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use FOS\UserBundle\Controller\RegistrationController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
-use PUGX\MultiUserBundle\Form\FormFactory;
+use Massil\MultiUserBundle\Form\FormFactory;
 
 class RegistrationManager
 {
     /**
      *
-     * @var \PUGX\MultiUserBundle\Model\UserDiscriminator
+     * @var \Massil\MultiUserBundle\Model\UserDiscriminator
      */
     protected $userDiscriminator;
 
@@ -30,16 +30,16 @@ class RegistrationManager
 
     /**
      *
-     * @var \PUGX\MultiUserBundle\Form\FormFactory
+     * @var \Massil\MultiUserBundle\Form\FormFactory
      */
     protected $formFactory;
 
     /**
      *
-     * @param \PUGX\MultiUserBundle\Model\UserDiscriminator $userDiscriminator
+     * @param \Massil\MultiUserBundle\Model\UserDiscriminator $userDiscriminator
      * @param \Symfony\Component\DependencyInjection\ContainerInterface $container
      * @param \FOS\UserBundle\Controller\RegistrationController $controller
-     * @param \PUGX\MultiUserBundle\Form\FormFactory $formFactory
+     * @param \Massil\MultiUserBundle\Form\FormFactory $formFactory
      */
     public function __construct(UserDiscriminator $userDiscriminator,
                                 ContainerInterface $container,

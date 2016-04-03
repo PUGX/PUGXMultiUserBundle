@@ -1,8 +1,8 @@
 <?php
 
-namespace PUGX\MultiUserBundle\Form;
+namespace Massil\MultiUserBundle\Form;
 
-use PUGX\MultiUserBundle\Model\UserDiscriminator;
+use Massil\MultiUserBundle\Model\UserDiscriminator;
 use Symfony\Component\Form\FormFactoryInterface;
 use FOS\UserBundle\Form\Factory\FactoryInterface;
 
@@ -10,7 +10,7 @@ class FormFactory implements FactoryInterface
 {
     /**
      *
-     * @var \PUGX\MultiUserBundle\Model\UserDiscriminator 
+     * @var \Massil\MultiUserBundle\Model\UserDiscriminator 
      */
     private $userDiscriminator;
     
@@ -34,7 +34,7 @@ class FormFactory implements FactoryInterface
     
     /**
      * 
-     * @param \PUGX\MultiUserBundle\Model\UserDiscriminator $userDiscriminator
+     * @param \Massil\MultiUserBundle\Model\UserDiscriminator $userDiscriminator
      * @param string $type registration|profile
      */
     public function __construct(UserDiscriminator $userDiscriminator, FormFactoryInterface $formFactory, $type) 
@@ -60,7 +60,7 @@ class FormFactory implements FactoryInterface
             
         $form = $this->formFactory->createNamed(
                 $name, 
-                $type, 
+                get_class($type), 
                 null, 
                 array('validation_groups' => $validationGroups));
         

@@ -1,6 +1,6 @@
 <?php
 
-namespace PUGX\MultiUserBundle\Validator\Constraints;
+namespace Massil\MultiUserBundle\Validator\Constraints;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Symfony\Component\Validator\Constraint;

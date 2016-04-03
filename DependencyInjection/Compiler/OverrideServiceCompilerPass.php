@@ -1,6 +1,6 @@
 <?php
 
-namespace PUGX\MultiUserBundle\DependencyInjection\Compiler;
+namespace Massil\MultiUserBundle\DependencyInjection\Compiler;
 
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -12,12 +12,12 @@ class OverrideServiceCompilerPass implements CompilerPassInterface
         $this->changeService(
                 $container, 
                 'fos_user.registration.form.factory', 
-                'pugx_multi_user.registration_form_factory');
+                'massil_multi_user.registration_form_factory');
         
         $this->changeService(
                 $container, 
                 'fos_user.profile.form.factory', 
-                'pugx_multi_user.profile_form_factory');
+                'massil_multi_user.profile_form_factory');
     }
     
     private function changeService($container, $serviceName, $newServiceName)
