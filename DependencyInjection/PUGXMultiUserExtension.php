@@ -21,13 +21,19 @@ class PUGXMultiUserExtension extends Extension
     {
         $configuration = new Configuration();
         $config = $this->processConfiguration($configuration, $configs);
-                
+
         $users = $config['users'];
         $container->setParameter('pugx_user_discriminator_users', $users);
 
+        if (!isset($config['registration_controller'])) {
+          throw new \InvalidArgumentException('The "registration_controller" option must be set');
+        }
+
+        $container->setParameter('registration_controller.class',$config['registration_controller']);
+
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.yml');
-        
+
         $loader->load(sprintf('%s.yml', $config['db_driver']));
     }
 }

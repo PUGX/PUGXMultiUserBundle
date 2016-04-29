@@ -21,7 +21,7 @@ class Configuration implements ConfigurationInterface
         $rootNode = $treeBuilder->root('pugx_multi_user');
 
         $supportedDrivers = array('orm');
-        
+
         $rootNode->
             children()
                 ->scalarNode('db_driver')
@@ -31,7 +31,7 @@ class Configuration implements ConfigurationInterface
                         ->thenInvalid('The driver %s is not supported. Please choose one of '.json_encode($supportedDrivers))
                     ->end()
                 ->end();
-        
+
         $rootNode->
                 children()
                     ->arrayNode('users')->prototype('array')
@@ -40,7 +40,7 @@ class Configuration implements ConfigurationInterface
                                 ->children()
                                     ->scalarNode('class')->isRequired()->cannotBeEmpty()->end()
                                     ->scalarNode('factory')->defaultValue('PUGX\MultiUserBundle\Model\UserFactory')->end()
-                                ->end()              
+                                ->end()
                             ->end()
                         ->end()
                         ->children()
@@ -81,11 +81,17 @@ class Configuration implements ConfigurationInterface
                                  ->end()
                             ->end()
                         ->end()
-                        
+
                     ->end()
                 ->end()
                 ->end();
-        
+
+        $rootNode->
+          children()
+            ->scalarNode('registration_controller')
+            ->defaultValue('FOS\UserBundle\Controller\RegistrationController')
+            ->end();
+
         return $treeBuilder;
     }
 }
