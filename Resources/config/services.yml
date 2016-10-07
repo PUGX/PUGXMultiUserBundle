@@ -3,7 +3,7 @@ services:
     # to discriminate users types
     pugx_user.manager.user_discriminator:
         class:     PUGX\MultiUserBundle\Model\UserDiscriminator
-        arguments: ["@session", %pugx_user_discriminator_users%]       
+        arguments: ["@session", "%pugx_user_discriminator_users%"]       
         
     #manage registration
     pugx_multi_user.registration_manager:
