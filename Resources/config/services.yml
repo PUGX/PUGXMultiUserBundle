@@ -8,7 +8,7 @@ services:
     #manage registration
     pugx_multi_user.registration_manager:
         class: PUGX\MultiUserBundle\Controller\RegistrationManager
-        arguments: ["@pugx_user.manager.user_discriminator", "@service_container", "@pugx_multi_user.registration_controller", "@fos_user.registration.form.factory"]
+        arguments: ["@pugx_user.manager.user_discriminator", '@service_container', "@pugx_multi_user.registration_controller", "@fos_user.registration.form.factory"]
         
     pugx_multi_user.profile_manager:
         class: PUGX\MultiUserBundle\Controller\ProfileManager
