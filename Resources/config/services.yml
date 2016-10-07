@@ -3,12 +3,12 @@ services:
     # to discriminate users types
     pugx_user.manager.user_discriminator:
         class:     PUGX\MultiUserBundle\Model\UserDiscriminator
-        arguments: ["@session", "%pugx_user_discriminator_users%"]       
+        arguments: ["@session", '%pugx_user_discriminator_users%']       
         
     #manage registration
     pugx_multi_user.registration_manager:
         class: PUGX\MultiUserBundle\Controller\RegistrationManager
-        arguments: ["@pugx_user.manager.user_discriminator", "@service_container", '@pugx_multi_user.registration_controller', "@fos_user.registration.form.factory"]
+        arguments: ["@pugx_user.manager.user_discriminator", "@service_container", "@pugx_multi_user.registration_controller", "@fos_user.registration.form.factory"]
         
     pugx_multi_user.profile_manager:
         class: PUGX\MultiUserBundle\Controller\ProfileManager
