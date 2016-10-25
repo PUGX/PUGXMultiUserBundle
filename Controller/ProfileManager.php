@@ -58,7 +58,7 @@ class ProfileManager
         $this->controller->setContainer($this->container);
         $result = $this->controller->editAction($this->getRequest());
         if ($result instanceof RedirectResponse) {
-            return $this->controller->redirect($this->getRequest()->getRequestUri());
+            return $result;
         }
 
         $template = $this->userDiscriminator->getTemplate('profile');
