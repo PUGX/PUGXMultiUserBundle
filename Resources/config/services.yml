@@ -48,3 +48,13 @@ services:
     pugx_user_discriminator:
         alias: pugx_user.manager.user_discriminator
     
+    # user providers
+    pugx_multi_user.user_provider.username:
+        class: PUGX\MultiUserBundle\Security\UserProvider
+        arguments: ["@fos_user.user_manager"]
+        public: false
+
+    pugx_multi_user.user_provider.username_email:
+        class: PUGX\MultiUserBundle\Security\EmailUserProvider
+        arguments: ["@fos_user.user_manager"]
+        public: false
