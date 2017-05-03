@@ -1,5 +1,6 @@
 services:
-        
+     fos_user.doctrine_registry:
+        alias: doctrine
     # to discriminate users types
     pugx_user.manager.user_discriminator:
         class:     PUGX\MultiUserBundle\Model\UserDiscriminator
