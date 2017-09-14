@@ -1,3 +1,16 @@
+##Newton-Labs Version
+
+This version has been modified to resolve the symfony bug with [FOSUserBundle](https://github.com/FriendsOfSymfony/FOSUserBundle/issues/2048).
+
+Install this version:
+``` bash
+$ php composer.phar require fcpauldiaz/multi-user-bundle
+```
+
+I have added a show action in the profile controller included in this bundle. See the [commit](https://github.com/Newton-Labs/PUGXMultiUserBundle/commit/a6c07c11c832db2b7a8074520e1536d6ba73bcd1)
+
+Nothing else has been modified.
+
 PUGXMultiUserBundle
 ===================
 

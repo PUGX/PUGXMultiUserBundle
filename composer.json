@@ -1,5 +1,5 @@
 {
-    "name": "pugx/multi-user-bundle",
+    "name": "fcpauldiaz/multi-user-bundle",
     "type": "symfony-bundle",
     "description": "Symfony PUGXMultiUserBundle",
     "keywords": ["user management", "multi user management"],
@@ -13,7 +13,12 @@
         {
             "name": "Community",
             "homepage": "https://github.com/PUGX/PUGXMultiUserBundle/contributors"
+        },
+        {
+            "name": "Pablo Diaz",
+            "email": "pablodiaz@newtonlabs.com.gt"
         }
+        
     ],
     "require": {
         "doctrine/doctrine-bundle": "^1.2",
